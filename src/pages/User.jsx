@@ -4,6 +4,12 @@ import Header from "../components/Header";
 import { dataUsers } from "../data/datas";
 
 const User = () => {
+  const getFullAddress = (params) => {
+    console.log(params);
+    return `${params.row.address.street || ""} ${
+      params.row.address.suite || ""
+    }`;
+  };
   const columns = [
     {
       field: "id",
@@ -27,6 +33,12 @@ const User = () => {
       flex: 1,
     },
     {
+      field: "address",
+      headerName: "Address",
+      flex: 1,
+      valueGetter: getFullAddress,
+    },
+    {
       field: "phone",
       headerName: "Phone Number",
       flex: 1,
@@ -40,7 +52,7 @@ const User = () => {
   return (
     <Box m="20px">
       <Header title="User" subtitle="List of User" />
-      <Box m="20px 0 0 0" height="75vh">
+      <Box m="10px 0 0 0" height="75vh">
         <DataGrid rows={dataUsers} columns={columns} />
       </Box>
     </Box>
