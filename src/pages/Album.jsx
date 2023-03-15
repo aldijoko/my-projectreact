@@ -1,15 +1,25 @@
 import { Box, Typography } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import Header from "../components/Header";
-import { albumData } from "../data/datas";
+import axios from "axios";
+import { useEffect, useState } from "react";
 
 const Album = () => {
-  //   const getFullAddress = (params) => {
-  //     console.log(params);
-  //     return `${params.row.address.street || ""} ${
-  //       params.row.address.suite || ""
-  //     }`;
-  //   };
+  const [allDataAlbum, setAllDataAlbum] = useState([]);
+
+  const urlAlbum = `https://jsonplaceholder.typicode.com/albums`;
+
+  const getAllAlbum = () => {
+    axios.get(urlAlbum).then((res) => {
+      // console.log(res.data);
+      setAllDataAlbum(res.data);
+    });
+  };
+
+  useEffect(() => {
+    getAllAlbum();
+  }, []);
+
   const columns = [
     {
       field: "userId",
@@ -19,7 +29,7 @@ const Album = () => {
     {
       field: "id",
       headerName: "Id",
-      flex: 1,
+      flex: 0.5,
     },
     {
       field: "title",
@@ -31,7 +41,7 @@ const Album = () => {
     <Box m="20px">
       <Header title="Album" subtitle="List of Album by User" />
       <Box m="10px 0 0 0" height="75vh">
-        <DataGrid rows={albumData} columns={columns} />
+        <DataGrid rows={allDataAlbum} columns={columns} />
       </Box>
     </Box>
   );

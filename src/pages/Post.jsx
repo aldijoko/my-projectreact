@@ -3,9 +3,25 @@ import { PropTypes } from "prop-types";
 import { Box, Typography, Paper, Popper } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import Header from "../components/Header";
-import { postData } from "../data/datas";
+import axios from "axios";
+import { useEffect, useState } from "react";
 
 const Post = () => {
+  const [allDataPost, setAllDataPost] = useState([]);
+
+  const urlPost = `https://jsonplaceholder.typicode.com/posts`;
+
+  const gettAllPost = () => {
+    axios.get(urlPost).then((res) => {
+      // console.log(res.data);
+      setAllDataPost(res.data);
+    });
+  };
+
+  useEffect(() => {
+    gettAllPost();
+  }, []);
+
   const isOverflown = (element) => {
     return (
       element.scrollHeight > element.clientHeight ||
@@ -111,7 +127,7 @@ const Post = () => {
     width: PropTypes.number.isRequired,
   };
   const renderCellExpand = (params) => {
-    console.log(params);
+    // console.log(params);
     return (
       <GridCellExpand
         value={params.value || ""}
@@ -142,7 +158,7 @@ const Post = () => {
     {
       field: "userId",
       headerName: "UserId",
-      flex: 1,
+      flex: 0.5,
       width: 20,
     },
     {
@@ -164,7 +180,7 @@ const Post = () => {
     <Box m="20px">
       <Header title="Post" subtitle="List of Post by User" />
       <Box m="10px 0 0 0" height="75vh">
-        <DataGrid rows={postData} columns={columns} />
+        <DataGrid rows={allDataPost} columns={columns} />
       </Box>
     </Box>
   );
