@@ -1,11 +1,26 @@
 import { Box, Typography } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import Header from "../components/Header";
-import { dataUsers } from "../data/datas";
+import axios from "axios";
+import { useEffect, useState } from "react";
 
 const User = () => {
+  const [allDataUsers, setAllDataUsers] = useState([]);
+
+  const url = `https://jsonplaceholder.typicode.com/users`;
+
+  const gettAllUsers = () => {
+    axios.get(url).then((res) => {
+      setAllDataUsers(res.data);
+    });
+  };
+
+  useEffect(() => {
+    gettAllUsers();
+  }, []);
+
   const getFullAddress = (params) => {
-    console.log(params);
+    // console.log(params);
     return `${params.row.address.street || ""} ${
       params.row.address.suite || ""
     }`;
@@ -53,7 +68,7 @@ const User = () => {
     <Box m="20px">
       <Header title="User" subtitle="List of User" />
       <Box m="10px 0 0 0" height="75vh">
-        <DataGrid rows={dataUsers} columns={columns} />
+        <DataGrid rows={allDataUsers} columns={columns} />
       </Box>
     </Box>
   );
